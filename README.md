@@ -25,6 +25,7 @@ be `./config.json`, but this can be changed using the `-c` argument.
 The config file should be structured as follows:
 ```json
 {
+  "workspace": "<string>",
   "repositories": [
     "<string>"
   ],

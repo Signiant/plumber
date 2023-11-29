@@ -179,6 +179,7 @@ def main(config_file: str, dry_run: bool, verbose: bool) -> None:
     logging.info("Loading config...")
     with open(f"{config_file}", "r") as file:
         config = json.load(file)
+        bb.workspace = config["workspace"]
         repositories = config["repositories"]
         steps = config["steps"]
         reviewers = config["reviewers"]

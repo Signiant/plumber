@@ -4,6 +4,8 @@ import logging
 import os
 import requests
 
+workspace: str
+
 
 def commit_changes(repo_slug: str, message: str, pipelines_config: str, file_extension: str = "yaml", files_field: list = None, branch: str = "main") -> None:
     """
@@ -16,7 +18,7 @@ def commit_changes(repo_slug: str, message: str, pipelines_config: str, file_ext
     :param files_field: a list of files fields for the commit
     :param branch: the name of a branch to commit a change to
     """
-    url = f"https://api.bitbucket.org/2.0/repositories/signiant/{repo_slug}/src"
+    url = f"https://api.bitbucket.org/2.0/repositories/{workspace}/{repo_slug}/src"
     auth = get_bitbucket_credentials()
     headers = {
         "Accept": "application/json"
@@ -51,7 +53,7 @@ def create_branch(repo_slug: str, step: str) -> str | None:
     :param step: the name of a Bitbucket pipeline build step
     :return: the name of the new branch
     """
-    url = f"https://api.bitbucket.org/2.0/repositories/signiant/{repo_slug}/refs/branches"
+    url = f"https://api.bitbucket.org/2.0/repositories/{workspace}/{repo_slug}/refs/branches"
     auth = get_bitbucket_credentials()
     headers = {
         "Accept": "application/json"
@@ -96,7 +98,7 @@ def create_pull_request(repo_slug: str, branch: str, step: str, reviewers: list)
     :param step: a step that was removed
     :param reviewers: the UUIDs of the various reviewers
     """
-    url = f"https://api.bitbucket.org/2.0/repositories/signiant/{repo_slug}/pullrequests"
+    url = f"https://api.bitbucket.org/2.0/repositories/{workspace}/{repo_slug}/pullrequests"
     auth = get_bitbucket_credentials()
     headers = {
         "Accept": "application/json",
@@ -153,7 +155,7 @@ def get_latest_commit_hash(repo_slug: str, branch: str = "main") -> str | None:
     :param branch: the name of the branch to get the commit hash from
     :return: the hash of the most recent commit
     """
-    url = f"https://api.bitbucket.org/2.0/repositories/signiant/{repo_slug}/commits"
+    url = f"https://api.bitbucket.org/2.0/repositories/{workspace}/{repo_slug}/commits"
     auth = get_bitbucket_credentials()
     headers = {
         "Accept": "application/json"
@@ -196,7 +198,7 @@ def get_pipelines_bytes(repo_slug: str, commit: str, extension: str) -> bytes | 
     :return: a bytes representation of a repo's pipelines file
     """
     url = (
-        f"https://api.bitbucket.org/2.0/repositories/signiant/"
+        f"https://api.bitbucket.org/2.0/repositories/{workspace}/"
         f"{repo_slug}/src/{commit}/bitbucket-pipelines.{extension}"
     )
     auth = get_bitbucket_credentials()
